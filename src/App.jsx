@@ -7,6 +7,7 @@ import Hero from './components/Hero';
 import TechGrid from './components/TechGrid';
 import MyStack from './components/MyStack';
 import LoadingSpinner from './components/LoadingSpinner';
+import Footer from './components/Footer';
 
 export default function App() {
   const [technologies, setTechnologies] = useState([]);
@@ -102,6 +103,9 @@ export default function App() {
           )}
         </section>
       </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
