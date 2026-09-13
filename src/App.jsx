@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import TechGrid from './components/TechGrid';
@@ -24,26 +27,50 @@ export default function App() {
       });
   }, []);
 
-  // Add technology to stack
+  // Add technology to stack with duplicate check
   const handleAddToStack = (tech) => {
     const alreadyExists = stack.some((item) => item.id === tech.id);
-    if (!alreadyExists) {
-      setStack((prev) => [...prev, tech]);
+    if (alreadyExists) {
+      toast.warning(`${tech.name} is already in your stack!`, {
+        toastId: `dup-${tech.id}`,
+      });
+      return;
     }
+
+    setStack((prev) => [...prev, tech]);
+    toast.success(`Added ${tech.name} to your stack!`);
   };
 
-  // Remove single item from stack
+  // Remove single technology from stack
   const handleRemoveFromStack = (id) => {
+    const itemToRemove = stack.find((item) => item.id === id);
     setStack((prev) => prev.filter((item) => item.id !== id));
+    toast.info(`Removed ${itemToRemove?.name || 'item'} from stack`);
   };
 
-  // Remove all items from stack
+  // Clear all technologies from stack
   const handleRemoveAll = () => {
+    if (stack.length === 0) return;
     setStack([]);
+    toast.error('Cleared all technologies from your stack!');
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-800">
+      {/* Toast notification container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+
       <Navbar />
       <main className="flex-1">
         <Hero />
